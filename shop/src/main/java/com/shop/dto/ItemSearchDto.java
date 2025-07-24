@@ -1,7 +1,11 @@
 package com.shop.dto;
 
 import com.shop.constant.ItemSellStatus;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 // 상품 관리 메뉴 구현하기
 public class ItemSearchDto {
     private String searchDateType;  // 시간과 상품 등록일 비교 상품데이터 조회, all : 전체, 1d:최근하루, 1w:최근일주일 등..
