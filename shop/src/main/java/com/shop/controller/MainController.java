@@ -17,10 +17,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MainController {
 
-//    @GetMapping(value = "/")
-//    public String main(){
-//        return "main";
-//    }
 
     private final ItemService itemService;
 
