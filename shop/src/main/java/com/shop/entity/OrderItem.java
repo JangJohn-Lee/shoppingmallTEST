@@ -10,8 +10,9 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter @Setter
-public class OrderItem extends BaseEntity{
+@Getter
+@Setter
+public class OrderItem extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -33,4 +34,19 @@ public class OrderItem extends BaseEntity{
 //    private LocalDateTime regTime;  //등록시간
 //
 //    private LocalDateTime updateTime;   //수정시간
+
+    //주문할 상품과 주문 수량을 통해 OrderItem 객체 생성
+    public static OrderItem createOrderItem(Item item, int count) {
+        OrderItem orderItem = new OrderItem();
+        orderItem.setItem(item);
+        orderItem.setCount(count);  //주문할 상품과 주문 수량 세팅
+        orderItem.setOrderPrice(item.getPrice());
+
+        item.removeStock(count);    //주문 수량만큼 재고수량 감소
+        return orderItem;
+    }
+
+    public int getTotalPrice() {
+        return orderPrice * count;  //주문 가격과 주문 수량을 곱해서 주만한 총 가격을 계산
+    }
 }
