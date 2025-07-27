@@ -100,4 +100,12 @@ public class ItemController {
         model.addAttribute("maxPage", 5);
         return "item/itemMng";
     }
+
+    //상품 상세  페이지로 이동할수 있게 하기
+    @GetMapping(value = "/item/{itemId}")
+    public String itemDtl(Model model, @PathVariable("itemId") Long itemId){
+        ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
+        model.addAttribute("item", itemFormDto);
+        return "item/itemDtl";
+    }
 }
