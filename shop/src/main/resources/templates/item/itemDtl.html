@@ -28,35 +28,39 @@
         }
 
         function order(){
+            //스프링 시큐리티를 쓸경우 기본적으로 post 방식의 데이터 전송에는 CSRF 토큰값이 필요함. 따라서 해당값 조회하기
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
 
             var url = "/order";
+
+            //주문할 상품의 아이디와 주문수량 데이터를 전달할 객체 생성
             var paramData = {
                 itemId : $("#itemId").val(),
                 count : $("#count").val()
             };
 
+            //서버에 보낼 주문데이터를 json으로 변경
             var param = JSON.stringify(paramData);
 
             $.ajax({
                 url      : url,
                 type     : "POST",
-                contentType : "application/json",
+                contentType : "application/json",   //서버에 데이터를 보낼 형식을 json 타입으로 설정
                 data     : param,
                 beforeSend : function(xhr){
                     /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
                     xhr.setRequestHeader(header, token);
                 },
-                dataType : "json",
+                dataType : "json",  //서버에서 결과값으로 받을 데이터의  타입을 json 으로 설정
                 cache   : false,
-                success  : function(result, status){
+                success  : function(result, status){    //주문로직 호출 성공
                     alert("주문이 완료 되었습니다.");
-                    location.href='/';
+                    location.href='/';  //메인페이지로 이동
                 },
                 error : function(jqXHR, status, error){
 
-                    if(jqXHR.status == '401'){
+                    if(jqXHR.status == '401'){  //로그인 상태가 아닐때
                         alert('로그인 후 이용해주세요');
                         location.href='/members/login';
                     } else{
@@ -100,7 +104,7 @@
                         alert('로그인 후 이용해주세요');
                         location.href='/members/login';
                     } else{
-                        alert(jqXHR.responseText);
+                        alert(jqXHR.responseText);  //주문 시 에러발생하면 해당 메시지 출력
                     }
 
                 }
