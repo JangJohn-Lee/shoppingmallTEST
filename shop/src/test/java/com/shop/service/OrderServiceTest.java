@@ -1,6 +1,7 @@
 package com.shop.service;
 
 import com.shop.constant.ItemSellStatus;
+import com.shop.constant.OrderStatus;
 import com.shop.dto.OrderDto;
 import com.shop.entity.Item;
 import com.shop.entity.Member;
@@ -76,4 +77,23 @@ class OrderServiceTest {
 
         assertEquals(totalPrice, order.getTotalPrice());        //주문한 상품의 총 가격과 데이터베이스에 저장된 상품의 가격을 비교해서 같으면 테스트 성공적으로 종료
     }
+
+    @Test
+    @DisplayName("주문 취소 테스트")
+    public void cancelOrder(){      // 주문  취소
+        Item item = saveItem();
+        Member member = saveMember();
+
+        OrderDto orderDto = new OrderDto();
+        orderDto.setCount(10);
+        orderDto.setItemId(item.getId());
+        Long orderId = orderService.order(orderDto, member.getEmail());
+
+        Order order = orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
+        orderService.cancelOrder(orderId);
+
+        assertEquals(OrderStatus.CANCEL, order.getOrderStatus());
+        assertEquals(100, item.getStockNumber());
+    }
+
 }
